@@ -1,0 +1,13 @@
+{
+  "name": "team-ai-portfolio",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --workspace=FE & npm run dev --workspace=BE",
+    "build": "npm run build --workspace=FE && npm run build --workspace=BE",
+    "lint": "npm run lint --workspace=FE && npm run lint --workspace=BE"
+  },
+  "workspaces": [
+    "FE",
+    "BE"
+  ]
+}

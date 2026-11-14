@@ -1,0 +1,32 @@
+{
+  "team": {
+    "name": "Your Team Name",
+    "description": "A short description of the team.",
+    "members": [
+      {
+        "id": "member-1",
+        "name": "Member One",
+        "role": "Frontend Developer",
+        "bio": "Add a short biography here.",
+        "skills": ["React", "TypeScript"],
+        "projects": []
+      },
+      {
+        "id": "member-2",
+        "name": "Member Two",
+        "role": "Backend Developer",
+        "bio": "Add a short biography here.",
+        "skills": ["Node.js", "Express"],
+        "projects": []
+      },
+      {
+        "id": "member-3",
+        "name": "Member Three",
+        "role": "UI/UX Designer",
+        "bio": "Add a short biography here.",
+        "skills": ["Figma", "UI Design"],
+        "projects": []
+      }
+    ]
+  }
+}

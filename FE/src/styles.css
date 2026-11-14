@@ -1,0 +1,41 @@
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #172033;
+  background: #f5f7fb;
+}
+
+body {
+  margin: 0;
+}
+
+.app-shell {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 96px 24px;
+}
+
+.eyebrow {
+  color: #536dfe;
+  font-weight: 700;
+}
+
+.muted {
+  color: #667085;
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 8px 24px #17203312; }
+.role { color: #536dfe; font-weight: 700; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tags span { background: #eef0ff; border-radius: 999px; padding: 6px 10px; font-size: 13px; }
+.chat form { display: flex; gap: 8px; }
+input { flex: 1; border: 1px solid #d0d5dd; border-radius: 8px; padding: 12px; }
+button { border: 0; border-radius: 8px; padding: 12px 18px; color: white; background: #536dfe; cursor: pointer; }
+button:disabled { opacity: .6; cursor: wait; }
+.reply { margin-top: 20px; padding: 16px; background: #f5f7fb; border-radius: 8px; }

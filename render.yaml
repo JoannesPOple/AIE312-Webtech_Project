@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: team-ai-portfolio-api
+    runtime: node
+    rootDir: BE
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash
+      - key: CLIENT_URL
+        sync: false
