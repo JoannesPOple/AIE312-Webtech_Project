@@ -12,12 +12,14 @@
     "cors": "latest",
     "dotenv": "latest",
     "express": "latest",
-    "@google/genai": "latest"
+    "@google/genai": "latest",
+    "pg": "latest"
   },
   "devDependencies": {
     "@types/cors": "latest",
     "@types/express": "latest",
     "@types/node": "latest",
+    "@types/pg": "latest",
     "tsx": "latest",
     "typescript": "latest",
     "eslint": "latest"

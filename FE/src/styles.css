@@ -39,3 +39,7 @@ input { flex: 1; border: 1px solid #d0d5dd; border-radius: 8px; padding: 12px; }
 button { border: 0; border-radius: 8px; padding: 12px 18px; color: white; background: #536dfe; cursor: pointer; }
 button:disabled { opacity: .6; cursor: wait; }
 .reply { margin-top: 20px; padding: 16px; background: #f5f7fb; border-radius: 8px; }
+.messages { display: grid; gap: 8px; margin-top: 20px; }
+.message { margin: 0; padding: 12px; border-radius: 8px; }
+.message.user { background: #eef0ff; }
+.message.assistant { background: #f5f7fb; }
