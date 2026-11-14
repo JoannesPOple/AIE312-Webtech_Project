@@ -29,14 +29,24 @@ function App() {
     if (!message.trim()) return;
     setLoading(true);
     setReply("");
-    const result = await fetch(`${apiUrl}/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message }),
-    });
-    const data = await result.json();
-    setReply(data.reply ?? data.error ?? "เกิดข้อผิดพลาด");
-    setLoading(false);
+    try {
+      const result = await fetch(`${apiUrl}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
+      const data = await result.json();
+
+      if (!result.ok) {
+        throw new Error(data.error ?? "เกิดข้อผิดพลาดในการเชื่อมต่อกับ AI");
+      }
+
+      setReply(data.reply ?? data.error ?? "เกิดข้อผิดพลาด");
+    } catch (error) {
+      setReply(error instanceof Error ? error.message : "ไม่สามารถเชื่อมต่อกับ AI ได้");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
