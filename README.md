@@ -48,9 +48,12 @@ GEMINI_MODEL=gemini-2.5-flash
 PORT=3000
 CLIENT_URL=http://localhost:5173
 VITE_API_URL=http://localhost:3000/api
+DATABASE_URL=postgresql://user:password@localhost:5432/team_ai_portfolio
 ```
 
 Keep `.env` private. Do not commit it or put the Gemini key in `FE` code. The `.env.example` file is a template and should not contain a real key.
+
+Set `DATABASE_URL` to a PostgreSQL connection string. The backend creates the `chat_messages` table on startup and stores chat history through `/api/chat/history`.
 
 ## Run locally
 
