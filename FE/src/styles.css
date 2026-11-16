@@ -155,6 +155,7 @@ body {
 
 /* ================= HERO SECTION ================= */
 .corp-hero {
+  scroll-margin-top: 32px;
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -241,7 +242,15 @@ body {
 
 /* ================= MEET OUR TEAM SECTION ================= */
 .corp-team-section {
+  scroll-margin-top: 32px;
   margin-top: 16px;
+}
+
+.corp-info-section {
+  min-height: 260px;
+  padding: 56px 0;
+  scroll-margin-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .corp-section-header {
