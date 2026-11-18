@@ -337,7 +337,7 @@ export default function App() {
   }
 
   return (
-    <div className="corporate-dashboard">
+    <div className={`corporate-dashboard ${isChatOpen ? "chat-open" : ""}`}>
       {/* SIDEBAR */}
       <aside className="corp-sidebar">
         {/* Flying energy particles */}
