@@ -6,27 +6,56 @@
     "members": [
       {
         "id": "1",
-        "name": "Yada S.",
+        "name": "Joannes Paulus M. Ople",
         "role": "Data Analyst & Developer",
         "bio": "Specializes in data visualization, web development, and analytics.",
         "skills": ["Data Analyst", "Developer"],
-        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80"
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80",
+        "projects": [
+          {
+            "name": "Learn Lab Power 2025: Soft Power Beyond AI",
+            "result": "Top 38 Finalists",
+            "date": "December 21, 2025",
+            "description": "Created 'Siam Pose,' an AI-interactive photo booth that uses Interactive Pose Matching and AI Virtual Clothes Changing to make Likay traditional Thai culture more accessible. The competition focused on elevating Thai soft power."
+          },
+          {
+            "name": "BU Mini Hackathon 2026",
+            "result": "Top 10 Finalists",
+            "date": "February 2, 2026",
+            "description": "Selected for the Applications for Innovation & Sustainability business plan competition. The team developed sustainable, technology-enabled solutions and presented a business plan balancing technical feasibility with market viability."
+          },
+          {
+            "name": "Automation Robot & AI Competition 2026",
+            "result": "Top 8 Finalists - National Finals",
+            "date": "February 18, 2026",
+            "description": "Competed in the Automated Goods Sorting with AI and RoboticArm theme. The team programmed an automated robotic arm to inspect, classify, and sort items in a 20-minute live challenge, representing Bangkok University among more than 40 groups nationwide."
+          }
+        ]
       },
       {
         "id": "2",
-        "name": "Pimchanok K.",
-        "role": "AI & Machine Learning",
-        "bio": "Focuses on deep learning architectures, Gemini integration, and prompt engineering.",
-        "skills": ["AI", "Machine Learning"],
-        "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=80"
+        "name": "Yadawadee",
+        "role": "Website Designer & AI/ML",
+        "bio": "Designed the team website and works on machine learning, data analysis, and AI solutions, with experience in route optimization, financial prediction, and SME financial inclusion challenges.",
+        "skills": ["Website Design", "Machine Learning", "Exploratory Data Analysis", "Feature Engineering", "Model Evaluation", "Route Optimization", "Financial Data"],
+        "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=80",
+        "projects": [
+          { "name": "AI Hackathon: Route Optimization 2026", "result": "Top 21 Semifinalists", "description": "Developed an AI-driven route optimization solution for an SCG CPAC logistics challenge, applying data-driven optimization to improve routing efficiency and support sustainable logistics." },
+          { "name": "AI Hack Thailand 2025 (AI × Financial Data)", "result": "Top 8 Finalists", "description": "Developed a machine learning model to predict Long Overdue Debtors using credit data from AIRA & AIFUL Public Company Limited. Used AUC as the primary evaluation metric and applied data preprocessing, exploratory data analysis, feature engineering, model selection, cross-validation, and hyperparameter tuning." },
+          { "name": "SME Financial Inclusion Hackathon 2025", "result": "Team Participant", "description": "Worked with a team on barriers SMEs face when accessing financial services and explored data-informed ways to improve financial inclusion." }
+        ]
       },
       {
         "id": "3",
-        "name": "Nattamon T.",
-        "role": "Data Engineer",
-        "bio": "Experienced in data pipelines, backend architecture, and cloud workflows.",
-        "skills": ["Data Engineer", "Pipelines"],
-        "avatar": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&auto=format&fit=crop&q=80"
+        "name": "Pemika",
+        "role": "Strategy & Sustainability",
+        "bio": "Works on market analysis, investment planning, financial feasibility, and sustainable transport concepts.",
+        "skills": ["Market Analysis", "Investment Strategy", "Financial Feasibility", "Energy Modeling", "Trade-route Logistics", "Sustainability"],
+        "avatar": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&auto=format&fit=crop&q=80",
+        "projects": [
+          { "name": "Thailand Real Estate Case Competition 2025", "result": "Top 20 Semifinalist", "date": "June 2025", "description": "Developed a strategic real estate proposal for a Bangkok CBD site based on the CBRE case challenge, combining site and market analysis, development planning, financial feasibility, sustainability considerations, and an investment strategy." },
+          { "name": "SAS Hackathon", "description": "Created a blueprint for an electric cargo vessel and simulated energy use and trade-route logistics to consider battery lifecycle, payload capacity, commercial viability, and maritime environmental requirements." }
+        ]
       }
     ]
   }
