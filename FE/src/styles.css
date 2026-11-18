@@ -234,7 +234,8 @@ body {
 
 .corp-cards-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* fixed max width so cards keep the same shape whatever the layout */
+  grid-template-columns: repeat(3, minmax(0, 300px));
   gap: 20px;
 }
 
@@ -591,10 +592,11 @@ body {
 }
 
 .flip-inner {
-  display: grid;
+  position: relative;
   height: 100%;
   transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
   transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .flip-card.is-flipped .flip-inner {
@@ -609,26 +611,41 @@ body {
 }
 
 .flip-face {
-  grid-area: 1 / 1;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  /* the faces themselves never move; only .flip-inner rotates */
+  transition: border-color var(--ease), box-shadow var(--ease);
 }
 
-/* Hover glow lives on the wrapper so it doesn't fight the flip transform */
-.flip-face:hover {
+.flip-front {
+  height: 100%;
+}
+
+.flip-front,
+.flip-front:hover {
   transform: none;
 }
 
-.flip-card:hover .flip-face {
+.flip-card:hover .flip-face,
+.flip-card.is-flipped .flip-face {
   border-color: var(--accent);
   box-shadow: var(--glow);
 }
 
-.flip-back {
+/* The front sets the card's size; the back fills it and scrolls if needed */
+.flip-back,
+.flip-back:hover {
+  position: absolute;
+  inset: 0;
   transform: rotateY(180deg);
-  padding: 20px 18px;
+}
+
+.flip-back {
+  padding: 18px 16px 14px;
   background: linear-gradient(160deg, #183324 0%, var(--surface) 55%);
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-30) transparent;
 }
 
 .flip-hint {
@@ -653,14 +670,14 @@ body {
 }
 
 .back-bio {
-  margin-top: 12px;
-  font-size: 0.88rem;
+  margin-top: 10px;
+  font-size: 0.84rem;
   line-height: 1.55;
   color: var(--text);
 }
 
 .back-label {
-  margin: 16px 0 8px;
+  margin: 12px 0 8px;
   font-family: var(--font-display);
   font-size: 0.7rem;
   font-weight: 700;
@@ -673,16 +690,17 @@ body {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 5px;
 }
 
 .power-chip {
   position: relative;
   overflow: hidden;
-  padding: 4px 10px;
+  padding: 3px 9px;
   border: 1px solid var(--accent-30);
   border-radius: 9999px;
-  font-size: 0.76rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
   font-weight: 500;
   color: var(--text);
   background: var(--accent-08);
@@ -1013,9 +1031,9 @@ body {
 /* ================= PLANET (CHAT CLOSED) ================= */
 .planet-scene {
   position: fixed;
-  right: 40px;
+  right: 28px;
   top: 50%;
-  width: min(500px, 32vw);
+  width: var(--chat-w);
   aspect-ratio: 1;
   transform: translateY(-50%);
   pointer-events: none;
@@ -1084,21 +1102,18 @@ body {
   animation: blink 2.8s ease-in-out infinite;
 }
 
-/* Only show where it won't cover the page content */
-@media (max-width: 1400px) {
+/* On small screens there's no side column, so skip the planet */
+@media (max-width: 1050px) {
   .planet-scene {
     display: none;
   }
 }
 
 /* ================= MAKE ROOM FOR THE CHAT ================= */
-.corp-main {
-  transition: margin-right 0.25s ease-in-out;
-}
-
 @media (min-width: 1051px) {
-  /* Reserve the chat's width so it never covers the cards */
-  .corporate-dashboard.chat-open .corp-main {
+  /* Reserve a right-hand column for the chat or the planet,
+     so neither ever covers the cards */
+  .corp-main {
     margin-right: calc(var(--chat-w) + 40px);
     padding-right: 24px;
   }
