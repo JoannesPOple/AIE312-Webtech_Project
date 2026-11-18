@@ -17,7 +17,12 @@ async function initializeDatabase() {
   if (pool) await pool.query("CREATE TABLE IF NOT EXISTS chat_messages (id BIGSERIAL PRIMARY KEY, role TEXT NOT NULL CHECK (role IN ('user', 'assistant')), content TEXT NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW())");
 }
 
-app.use(cors({ origin: process.env.CLIENT_URL ?? "http://localhost:5173" }));
+// CLIENT_URL may list several sites, comma-separated (e.g. GitHub Pages + local dev).
+const allowedOrigins = (process.env.CLIENT_URL ?? "http://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim().replace(/\/$/, ""))
+  .filter(Boolean);
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 app.get("/api/health", (_request, response) => {
