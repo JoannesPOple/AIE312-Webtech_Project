@@ -5,6 +5,9 @@ import { GoogleGenAI } from "@google/genai";
 import pg from "pg";
 import portfolio from "./data/portfolio.json" with { type: "json" };
 
+const PRIMARY_MODEL = "gemini-3.8-flash";
+const FALLBACK_MODELS = ["gemini-3.8-flash", "gemini-3.5-flash-lite"];
+
 const app = express();
 const port = Number(process.env.PORT ?? 3000);
 const pool = process.env.DATABASE_URL ? new pg.Pool({ connectionString: process.env.DATABASE_URL, ssl: process.env.DATABASE_URL.includes("localhost") ? false : { rejectUnauthorized: false } }) : null;
@@ -62,14 +65,29 @@ app.post("/api/chat", async (request, response) => {
   }
 
   try {
-    const client = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    const result = await client.models.generateContent({
-      model: process.env.GEMINI_MODEL ?? "gemini-2.5-flash",
-      contents: message,
-      config: {
-        systemInstruction: `คุณคือผู้ช่วยของทีม Portfolio ให้ตอบจากข้อมูลทีมด้านล่างเท่านั้น หากไม่มีข้อมูลให้บอกตามตรง ห้ามสร้างข้อมูลขึ้นเอง\n\n${JSON.stringify(portfolio)}`,
-      },
-    });
+    const client = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY.trim() });
+    // Try the main model first; if it's retired or overloaded, fall back to the next one.
+    const models = [process.env.GEMINI_MODEL?.trim() || PRIMARY_MODEL, ...FALLBACK_MODELS].filter(
+      (model, index, list) => list.indexOf(model) === index,
+    );
+    let result;
+    let lastError: unknown;
+    for (const model of models) {
+      try {
+        result = await client.models.generateContent({
+          model,
+          contents: message,
+          config: {
+            systemInstruction: `คุณคือผู้ช่วยของทีม Portfolio ให้ตอบจากข้อมูลทีมด้านล่างเท่านั้น หากไม่มีข้อมูลให้บอกตามตรง ห้ามสร้างข้อมูลขึ้นเอง\nAlways reply in the same language the user writes in (English question → English answer). Use plain text only, no Markdown symbols like ** or #. Keep answers short and friendly.\n\n${JSON.stringify(portfolio)}`,
+          },
+        });
+        break;
+      } catch (error) {
+        console.error(`Gemini model ${model} failed:`, error instanceof Error ? error.message : error);
+        lastError = error;
+      }
+    }
+    if (!result) throw lastError;
 
     const reply = result.text ?? "ไม่พบคำตอบจาก Gemini";
     await saveMessage("user", message);
