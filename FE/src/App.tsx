@@ -30,23 +30,23 @@ const apiUrl = import.meta.env.VITE_API_URL ?? "http://localhost:3000/api";
 const DEFAULT_MEMBERS: Member[] = [
   {
     id: "1",
-    name: "Yada S.",
+    name: "Joannes Paulus M. Ople",
     role: "Data Analyst & Developer",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80",
+    avatar: "/avatars/joannes.jpg",
     skills: ["Data Analyst", "Developer"],
   },
   {
     id: "2",
-    name: "Pimchanok K.",
+    name: "Yadawadee Japimay",
     role: "AI & Machine Learning",
-    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=80",
+    avatar: "/avatars/yadawadee.jpg",
     skills: ["AI", "Machine Learning"],
   },
   {
     id: "3",
-    name: "Nattamon T.",
+    name: "Pemika Khongman",
     role: "Data Engineer",
-    avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&auto=format&fit=crop&q=80",
+    avatar: "/avatars/pemika.jpg",
     skills: ["Data Engineer", "Pipelines"],
   },
 ];

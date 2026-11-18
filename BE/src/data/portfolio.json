@@ -10,7 +10,7 @@
         "role": "Data Analyst & Developer",
         "bio": "Specializes in data visualization, web development, and analytics.",
         "skills": ["Data Analyst", "Developer"],
-        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80",
+        "avatar": "/avatars/joannes.jpg",
         "projects": [
           {
             "name": "Learn Lab Power 2025: Soft Power Beyond AI",
@@ -38,7 +38,7 @@
         "role": "Website Designer & AI/ML",
         "bio": "Designed the team website and works on machine learning, data analysis, and AI solutions, with experience in route optimization, financial prediction, and SME financial inclusion challenges.",
         "skills": ["Website Design", "Machine Learning", "Exploratory Data Analysis", "Feature Engineering", "Model Evaluation", "Route Optimization", "Financial Data"],
-        "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=80",
+        "avatar": "/avatars/yadawadee.jpg",
         "projects": [
           { "name": "AI Hackathon: Route Optimization 2026", "result": "Top 21 Semifinalists", "description": "Developed an AI-driven route optimization solution for an SCG CPAC logistics challenge, applying data-driven optimization to improve routing efficiency and support sustainable logistics." },
           { "name": "AI Hack Thailand 2025 (AI × Financial Data)", "result": "Top 8 Finalists", "description": "Developed a machine learning model to predict Long Overdue Debtors using credit data from AIRA & AIFUL Public Company Limited. Used AUC as the primary evaluation metric and applied data preprocessing, exploratory data analysis, feature engineering, model selection, cross-validation, and hyperparameter tuning." },
@@ -51,7 +51,7 @@
         "role": "Strategy & Sustainability",
         "bio": "Works on market analysis, investment planning, financial feasibility, and sustainable transport concepts.",
         "skills": ["Market Analysis", "Investment Strategy", "Financial Feasibility", "Energy Modeling", "Trade-route Logistics", "Sustainability"],
-        "avatar": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&auto=format&fit=crop&q=80",
+        "avatar": "/avatars/pemika.jpg",
         "projects": [
           { "name": "Thailand Real Estate Case Competition 2025", "result": "Top 20 Semifinalist", "date": "June 2025", "description": "Developed a strategic real estate proposal for a Bangkok CBD site based on the CBRE case challenge, combining site and market analysis, development planning, financial feasibility, sustainability considerations, and an investment strategy." },
           { "name": "SAS Hackathon", "description": "Created a blueprint for an electric cargo vessel and simulated energy use and trade-route logistics to consider battery lifecycle, payload capacity, commercial viability, and maritime environmental requirements." }
