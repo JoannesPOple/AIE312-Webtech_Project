@@ -6,11 +6,31 @@
     "members": [
       {
         "id": "1",
-        "name": "Yada S.",
+        "name": "Joannes Paulus M. Ople",
         "role": "Data Analyst & Developer",
         "bio": "Specializes in data visualization, web development, and analytics.",
         "skills": ["Data Analyst", "Developer"],
-        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80"
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80",
+        "projects": [
+          {
+            "name": "Learn Lab Power 2025: Soft Power Beyond AI",
+            "result": "Top 38 Finalists",
+            "date": "December 21, 2025",
+            "description": "Created 'Siam Pose,' an AI-interactive photo booth that uses Interactive Pose Matching and AI Virtual Clothes Changing to make Likay traditional Thai culture more accessible. The competition focused on elevating Thai soft power."
+          },
+          {
+            "name": "BU Mini Hackathon 2026",
+            "result": "Top 10 Finalists",
+            "date": "February 2, 2026",
+            "description": "Selected for the Applications for Innovation & Sustainability business plan competition. The team developed sustainable, technology-enabled solutions and presented a business plan balancing technical feasibility with market viability."
+          },
+          {
+            "name": "Automation Robot & AI Competition 2026",
+            "result": "Top 8 Finalists - National Finals",
+            "date": "February 18, 2026",
+            "description": "Competed in the Automated Goods Sorting with AI and RoboticArm theme. The team programmed an automated robotic arm to inspect, classify, and sort items in a 20-minute live challenge, representing Bangkok University among more than 40 groups nationwide."
+          }
+        ]
       },
       {
         "id": "2",
@@ -27,7 +47,7 @@
       },
       {
         "id": "3",
-        "name": "Nattamon T.",
+        "name": "Pemika",
         "role": "Strategy & Sustainability",
         "bio": "Works on market analysis, investment planning, financial feasibility, and sustainable transport concepts.",
         "skills": ["Market Analysis", "Investment Strategy", "Financial Feasibility", "Energy Modeling", "Trade-route Logistics", "Sustainability"],
