@@ -205,12 +205,6 @@ export default function App() {
           </nav>
         </div>
 
-        <div className="corp-sidebar-bottom">
-          <div className="corp-online-status">
-            <span className="online-dot"></span>
-            <span>Online</span>
-          </div>
-        </div>
       </aside>
 
       {/* MAIN CONTENT */}
@@ -222,16 +216,6 @@ export default function App() {
             <h1 className="corp-title">{teamName}</h1>
             <p className="corp-subtitle">Innovate • Collaborate • Create Impact</p>
             <p className="corp-desc">{teamDesc}</p>
-            <button
-              className="corp-cta-btn"
-              onClick={() => navigateTo("projects")}
-            >
-              <span>Explore Projects</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </button>
           </div>
 
           {/* Glowing 3D Wireframe Globe */}
@@ -270,9 +254,6 @@ export default function App() {
         <section id="team" className="corp-team-section">
           <div className="corp-section-header">
             <h2 className="corp-section-title">Meet Our Team</h2>
-            <a href="#team" className="corp-view-all">
-              <span>View All →</span>
-            </a>
           </div>
 
           <div className="corp-cards-grid">
@@ -311,16 +292,6 @@ export default function App() {
               </div>
             ))}
           </div>
-        </section>
-
-        <section id="projects" className="corp-info-section">
-          <h2 className="corp-section-title">Projects</h2>
-          <p className="corp-desc">Explore the work created by Team 313.</p>
-        </section>
-
-        <section id="certificates" className="corp-info-section">
-          <h2 className="corp-section-title">Certificates</h2>
-          <p className="corp-desc">Our team certifications and achievements.</p>
         </section>
 
         <section id="contact" className="corp-info-section">
