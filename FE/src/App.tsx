@@ -57,6 +57,8 @@ const QUICK_PROMPTS = [
   "Show me your projects",
 ];
 
+const NAV_SECTIONS = ["home", "team", "projects", "certificates", "contact"] as const;
+
 export default function App() {
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
   const [activeNav, setActiveNav] = useState("home");
@@ -85,6 +87,28 @@ export default function App() {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, isChatOpen]);
+
+  useEffect(() => {
+    const sections = NAV_SECTIONS.map((id) => document.getElementById(id)).filter(
+      (section): section is HTMLElement => section !== null,
+    );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveNav(visible.target.id);
+      },
+      { rootMargin: "-20% 0px -60% 0px", threshold: [0.1, 0.5, 1] },
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  function navigateTo(sectionId: (typeof NAV_SECTIONS)[number]) {
+    setActiveNav(sectionId);
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   async function sendMessage(textToSend: string) {
     const text = textToSend.trim();
@@ -155,7 +179,7 @@ export default function App() {
           <nav className="corp-nav">
             <button
               className={`corp-nav-link ${activeNav === "home" ? "active" : ""}`}
-              onClick={() => setActiveNav("home")}
+              onClick={() => navigateTo("home")}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
@@ -166,8 +190,7 @@ export default function App() {
             <button
               className={`corp-nav-link ${activeNav === "team" ? "active" : ""}`}
               onClick={() => {
-                setActiveNav("team");
-                document.getElementById("team-grid")?.scrollIntoView({ behavior: "smooth" });
+                navigateTo("team");
               }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -181,7 +204,7 @@ export default function App() {
 
             <button
               className={`corp-nav-link ${activeNav === "projects" ? "active" : ""}`}
-              onClick={() => setActiveNav("projects")}
+              onClick={() => navigateTo("projects")}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
@@ -192,7 +215,7 @@ export default function App() {
 
             <button
               className={`corp-nav-link ${activeNav === "certificates" ? "active" : ""}`}
-              onClick={() => setActiveNav("certificates")}
+              onClick={() => navigateTo("certificates")}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="8" r="6"></circle>
@@ -203,7 +226,7 @@ export default function App() {
 
             <button
               className={`corp-nav-link ${activeNav === "contact" ? "active" : ""}`}
-              onClick={() => setActiveNav("contact")}
+              onClick={() => navigateTo("contact")}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
@@ -214,12 +237,6 @@ export default function App() {
         </div>
 
         <div className="corp-sidebar-bottom">
-          <button className="corp-chat-btn" onClick={() => setIsChatOpen(true)}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
-            </svg>
-            <span>Chat with AI</span>
-          </button>
           <div className="corp-online-status">
             <span className="online-dot"></span>
             <span>Online</span>
@@ -230,7 +247,7 @@ export default function App() {
       {/* MAIN CONTENT */}
       <main className="corp-main">
         {/* HERO */}
-        <section className="corp-hero">
+        <section id="home" className="corp-hero">
           <div className="hero-text-block">
             <span className="corp-tagline">WELCOME TO OUR PORTFOLIO</span>
             <h1 className="corp-title">{teamName}</h1>
@@ -238,7 +255,7 @@ export default function App() {
             <p className="corp-desc">{teamDesc}</p>
             <button
               className="corp-cta-btn"
-              onClick={() => document.getElementById("team-grid")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => navigateTo("projects")}
             >
               <span>Explore Projects</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -281,10 +298,10 @@ export default function App() {
         </section>
 
         {/* TEAM GRID */}
-        <section id="team-grid" className="corp-team-section">
+        <section id="team" className="corp-team-section">
           <div className="corp-section-header">
             <h2 className="corp-section-title">Meet Our Team</h2>
-            <a href="#team-grid" className="corp-view-all">
+            <a href="#team" className="corp-view-all">
               <span>View All →</span>
             </a>
           </div>
@@ -325,6 +342,21 @@ export default function App() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section id="projects" className="corp-info-section">
+          <h2 className="corp-section-title">Projects</h2>
+          <p className="corp-desc">Explore the work created by Team 313.</p>
+        </section>
+
+        <section id="certificates" className="corp-info-section">
+          <h2 className="corp-section-title">Certificates</h2>
+          <p className="corp-desc">Our team certifications and achievements.</p>
+        </section>
+
+        <section id="contact" className="corp-info-section">
+          <h2 className="corp-section-title">Contact</h2>
+          <p className="corp-desc">Connect with Team 313 through the available contact channels.</p>
         </section>
       </main>
 
