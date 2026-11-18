@@ -2,13 +2,17 @@ services:
   - type: web
     name: team-ai-portfolio-api
     runtime: node
+    plan: free
     rootDir: BE
     buildCommand: npm install && npm run build
     startCommand: npm start
+    healthCheckPath: /api/health
     envVars:
+      - key: NODE_VERSION
+        value: "22"
       - key: GEMINI_API_KEY
-        sync: false
+        sync: false # you paste this in the Render dashboard; never commit it
       - key: GEMINI_MODEL
         value: gemini-2.5-flash
       - key: CLIENT_URL
-        sync: false
+        value: https://joannespople.github.io,http://localhost:5173
