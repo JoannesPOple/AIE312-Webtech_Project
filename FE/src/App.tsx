@@ -1,5 +1,6 @@
 import { CSSProperties, FormEvent, useEffect, useState, useRef } from "react";
 import "./styles.css";
+import portfolioData from "../../BE/src/data/portfolio.json";
 
 type Project = {
   name: string;
@@ -201,31 +202,15 @@ function LinkIcon({ kind }: { kind: keyof MemberLinks }) {
   );
 }
 
-const apiUrl = import.meta.env.VITE_API_URL ?? "http://localhost:3000/api";
+const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
-const DEFAULT_MEMBERS: Member[] = [
-  {
-    id: "1",
-    name: "Joannes Paulus M. Ople",
-    role: "Data Analyst & Developer",
-    avatar: "/avatars/joannes.jpg",
-    skills: ["Data Analysis", "Data Visualization", "Web Development", "Computer Vision", "Robotic Arm Programming"],
-  },
-  {
-    id: "2",
-    name: "Yadawadee Japimay",
-    role: "AI & Machine Learning",
-    avatar: "/avatars/yadawadee.jpg",
-    skills: ["AI", "Machine Learning"],
-  },
-  {
-    id: "3",
-    name: "Pemika Khongman",
-    role: "Data Engineer",
-    avatar: "/avatars/pemika.jpg",
-    skills: ["Data Engineer", "Pipelines"],
-  },
-];
+// Same data the backend serves, bundled in so the site still shows
+// the whole team (e.g. on GitHub Pages) when the API can't be reached.
+const DEFAULT_MEMBERS: Member[] = (portfolioData as Portfolio).team.members;
+
+/** Resolve "/avatars/x.jpg" against Vite's base path (needed on GitHub Pages). */
+const assetUrl = (path: string) =>
+  path.startsWith("/") ? `${import.meta.env.BASE_URL}${path.slice(1)}` : path;
 
 const QUICK_PROMPTS = [
   "Who are the members of GreenLantern?",
@@ -548,7 +533,7 @@ export default function App() {
                       <div className="card-photo-wrapper">
                         <div className="organic-backdrop"></div>
                         {member.avatar ? (
-                          <img src={member.avatar} alt={member.name} className="member-avatar-img" />
+                          <img src={assetUrl(member.avatar)} alt={member.name} className="member-avatar-img" />
                         ) : (
                           <div className="avatar-placeholder">
                             {member.name.split(" ").map((n) => n[0]).join("")}
