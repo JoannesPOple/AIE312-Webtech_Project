@@ -12,19 +12,113 @@ BE/                       Node.js + Express API
   src/data/portfolio.json  Team and member information
 docs/                      Project notes and implementation prompt
 .github/workflows/ci.yml   Checks code on GitHub push and pull request
+.github/workflows/deploy-pages.yml  Deploys the frontend to GitHub Pages
 .env.example               List of environment variable names
 render.yaml                Render configuration for the backend
 ```
 
-## How the parts work together
+## Architecture
 
-The browser loads the React website from `FE`. The website requests team data and sends chat questions to the Express server in `BE`. The server adds the portfolio data as context and sends the question to Gemini. It then returns Gemini's answer to the website.
+**Live site:** <https://joannespople.github.io/AIE312-Webtech_Project/> · **API:** <https://team-ai-portfolio-api.onrender.com/api/health>
 
-```text
-User → FE → BE → Gemini API → BE → FE → User
+### System overview
+
+The website is static files on GitHub Pages. Everything that needs a secret or a server (team data API, AI chat) runs on the Express backend on Render. Only the backend talks to Gemini, so the API key never reaches the browser.
+
+```mermaid
+flowchart LR
+    User(["👤 Visitor's browser<br/>React app"])
+
+    subgraph GH["GitHub Pages (static hosting)"]
+        FE["FE build<br/>HTML · JS · CSS · photos<br/>+ bundled copy of portfolio.json"]
+    end
+
+    subgraph RENDER["Render (Node.js server)"]
+        BE["Express API<br/>/api/health · /api/portfolio<br/>/api/chat · /api/chat/history"]
+        DATA[("portfolio.json<br/>team data")]
+        ENV{{"GEMINI_API_KEY<br/>(secret, server only)"}}
+    end
+
+    GEMINI["Google Gemini<br/>gemini-3.8-flash<br/>fallback: gemini-3.5-flash-lite"]
+    DB[("PostgreSQL<br/>chat history<br/>(optional)")]
+
+    User -- "1. loads the site" --> FE
+    User -- "2. team data + chat (HTTPS, CORS-checked)" --> BE
+    BE -- reads --> DATA
+    BE -. uses .-> ENV
+    BE -- "3. question + team data" --> GEMINI
+    BE -. "saves messages if DATABASE_URL is set" .-> DB
 ```
 
-The API key is used only by the backend. If `GEMINI_API_KEY` is empty, `/api/chat` returns a demo message instead of contacting Gemini.
+| Part | Technology | Hosted on | Responsibility |
+|---|---|---|---|
+| Frontend (`FE`) | React, TypeScript, Vite | GitHub Pages | Shows the team, flip cards, missions and chat; falls back to its bundled data if the API is down |
+| Backend (`BE`) | Node.js, Express, TypeScript | Render (free plan) | Serves team data, checks CORS, keeps the Gemini key, calls Gemini |
+| Team data | `BE/src/data/portfolio.json` | In the repo | Single source of truth for the page, the API and the AI |
+| AI | Google Gemini (`@google/genai`) | Google | Writes answers grounded in the team data |
+| Chat storage | PostgreSQL (`pg`) | Optional | Saves questions and answers when `DATABASE_URL` is set |
+
+### How a chat message flows
+
+```mermaid
+sequenceDiagram
+    actor V as Visitor
+    participant FE as Frontend (browser)
+    participant BE as Express API (Render)
+    participant G as Google Gemini
+
+    V->>FE: Types a question or clicks a suggestion
+    FE->>BE: POST /api/chat { message }
+    BE->>BE: Check message and GEMINI_API_KEY
+    BE->>G: Question + system instruction + portfolio.json
+    alt model retired or overloaded
+        G-->>BE: Error (404 / 503)
+        BE->>G: Retry with next model in the fallback list
+    end
+    G-->>BE: Answer text
+    BE-->>FE: { reply }
+    FE-->>V: Reply typed out letter by letter
+```
+
+The system instruction tells Gemini to answer **only** from the team data, to say so when the data doesn't have the answer, and to reply in the visitor's language in plain text. If every model fails, the API returns `{ "error": "AI service is unavailable" }` (HTTP 502). If `GEMINI_API_KEY` is empty, it returns a demo message instead of contacting Gemini.
+
+### CI/CD pipeline
+
+One push to `main` runs CI and both deployments in parallel. In each lane, a failed step stops the steps after it, so the live version is only replaced by code that passed.
+
+```mermaid
+flowchart LR
+    PUSH(["git push to main"])
+
+    subgraph CI["CI · .github/workflows/ci.yml<br/>(also every branch + pull request)"]
+        direction LR
+        C1["npm run lint<br/>type check FE + BE"] --> C2["npm run build"] --> C3["✅ / ❌ on the commit"]
+    end
+
+    subgraph CDFE["CD frontend · .github/workflows/deploy-pages.yml"]
+        direction LR
+        F1["build job<br/>lint + build:pages<br/>(uses VITE_API_URL)"] --> F2["deploy job<br/>publish FE/dist"] --> F3["🌐 github.io"]
+    end
+
+    subgraph CDBE["CD backend · render.yaml"]
+        direction LR
+        B1["npm install + build"] --> B2["npm start<br/>health check /api/health"] --> B3["🌐 onrender.com"]
+    end
+
+    PUSH --> C1
+    PUSH --> F1
+    PUSH --> B1
+```
+
+### Configuration
+
+| Variable | Used by | Where it is set | Secret? |
+|---|---|---|---|
+| `GEMINI_API_KEY` | Backend | `.env` locally, Render dashboard live | **Yes** |
+| `GEMINI_MODEL` | Backend | `.env`, `render.yaml` | No |
+| `CLIENT_URL` | Backend (CORS, comma-separated) | `.env`, `render.yaml` | No |
+| `DATABASE_URL` | Backend (optional) | `.env` | Yes, if used |
+| `VITE_API_URL` | Frontend build | `.env` locally, GitHub repository variable for Pages | No (ends up in public JS) |
 
 ## Requirements
 
@@ -44,7 +138,7 @@ Open `.env` and fill in `GEMINI_API_KEY` to enable real Gemini answers:
 
 ```env
 GEMINI_API_KEY=your_key_here
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-3.8-flash
 PORT=3000
 CLIENT_URL=http://localhost:5173
 VITE_API_URL=http://localhost:3000/api
@@ -123,17 +217,16 @@ npm run build
 
 `lint` runs TypeScript checks for both workspaces. `build` creates the frontend production files in `FE/dist` and compiles the backend into `BE/dist`.
 
-## Deployment preparation
+## Deployment
 
-`render.yaml` describes the backend service on Render. Before deploying, set `GEMINI_API_KEY` and `CLIENT_URL` in the backend service environment. `CLIENT_URL` must be the deployed frontend's origin, without `/api`.
+- **Backend (Render):** `render.yaml` is a Render Blueprint. Render builds `BE` and runs `npm start`. Set `GEMINI_API_KEY` in the Render dashboard (without quotes). `CLIENT_URL` in `render.yaml` already allows the GitHub Pages site and localhost.
+- **Frontend (GitHub Pages):** `.github/workflows/deploy-pages.yml` builds `FE` with `npm run build:pages` (base path `/AIE312-Webtech_Project/`) and publishes it. It reads the backend address from the GitHub repository variable `VITE_API_URL` (`https://team-ai-portfolio-api.onrender.com/api`). GitHub Pages must be set to **Source: GitHub Actions** in the repository settings.
 
-The frontend must also be deployed as a static site. In the frontend host's build settings, use `FE` as the root directory, `npm install` as the install command, `npm run build` as the build command, and `dist` as the publish directory. Set `VITE_API_URL` to the deployed backend URL plus `/api` (for example, `https://your-backend.example/api`) before building the frontend.
-
-After deployment, test the live `/api/health`, `/api/portfolio`, and chat route. The actual public URLs depend on the hosting accounts and service names, so they are not listed here.
+Render's free plan sleeps after 15 minutes without traffic, so the first chat reply after a pause can take 30–60 seconds.
 
 ## CI on GitHub
 
-The workflow at `.github/workflows/ci.yml` runs on pushes and pull requests. It installs dependencies, runs `npm run lint`, and runs `npm run build` using Node.js 20. It checks the project; it does not deploy it.
+The workflow at `.github/workflows/ci.yml` runs on every push and pull request. It installs dependencies, runs `npm run lint`, and runs `npm run build`. Deployment is handled separately by `deploy-pages.yml` and Render (see [CI/CD pipeline](#cicd-pipeline)).
 
 ## Explaining the project
 
