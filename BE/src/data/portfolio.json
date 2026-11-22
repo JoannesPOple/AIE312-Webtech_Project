@@ -7,7 +7,7 @@
       {
         "id": "1",
         "name": "Joannes Paulus M. Ople",
-        "role": "Data Analyst & Developer",
+        "role": "Developer & Backend",
         "bio": "Specializes in data visualization, web development, and analytics.",
         "skills": ["Data Analysis", "Data Visualization", "Web Development", "Computer Vision", "Pose Matching", "AI Virtual Try-On", "Robotic Arm Programming", "AI Object Sorting", "Business Planning", "Innovation & Sustainability", "React & TypeScript", "Node.js Backend", "AI Chatbot Integration"],
         "avatar": "/avatars/joannes.jpg",
@@ -36,7 +36,7 @@
       {
         "id": "2",
         "name": "Yadawadee Japimay",
-        "role": "Website Designer & AI/ML",
+        "role": "Frontend Developer",
         "bio": "Designed the team website and works on machine learning, data analysis, and AI solutions, with experience in route optimization, financial prediction, and SME financial inclusion challenges.",
         "skills": ["Website Design", "Machine Learning", "Exploratory Data Analysis", "Feature Engineering", "Model Evaluation", "Route Optimization", "Financial Data"],
         "avatar": "/avatars/yadawadee.jpg",
@@ -50,7 +50,7 @@
       {
         "id": "3",
         "name": "Pemika Khongman",
-        "role": "Strategy & Sustainability",
+        "role": "Web Tester",
         "bio": "Works on market analysis, investment planning, financial feasibility, and sustainable transport concepts.",
         "skills": ["Market Analysis", "Investment Strategy", "Financial Feasibility", "Energy Modeling", "Trade-route Logistics", "Sustainability"],
         "avatar": "/avatars/pemika.jpg",
