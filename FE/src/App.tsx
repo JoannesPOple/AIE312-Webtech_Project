@@ -360,7 +360,7 @@ export default function App() {
                 <circle cx="24" cy="20" r="5.5" fill="currentColor" />
               </svg>
             </div>
-            <span className="corp-logo-text">GreenLantern</span>
+            <span className="corp-logo-text">RedLantern</span>
           </div>
 
           <nav className="corp-nav">
