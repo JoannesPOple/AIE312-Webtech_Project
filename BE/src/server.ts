@@ -1,7 +1,7 @@
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 import pg from "pg";
 import portfolio from "./data/portfolio.json" with { type: "json" };
 
@@ -79,6 +79,8 @@ app.post("/api/chat", async (request, response) => {
           contents: message,
           config: {
             systemInstruction: `คุณคือผู้ช่วยของทีม Portfolio ให้ตอบจากข้อมูลทีมด้านล่างเท่านั้น หากไม่มีข้อมูลให้บอกตามตรง ห้ามสร้างข้อมูลขึ้นเอง\nAlways reply in the same language the user writes in (English question → English answer). Use plain text only, no Markdown symbols like ** or #. Keep answers short and friendly.\n\n${JSON.stringify(portfolio)}`,
+            // Simple Q&A over a small JSON file doesn't need deep reasoning; low thinking cuts reply time.
+            thinkingConfig: { thinkingLevel: ThinkingLevel.LOW },
           },
         });
         break;
